@@ -154,16 +154,10 @@ u8 is_rumble_finished_and_queue_empty(void) {
         return FALSE;
     }
 
-    if (gRumbleDataQueue[0].unk00 != 0) {
-        return FALSE;
-    }
-
-    if (gRumbleDataQueue[1].unk00 != 0) {
-        return FALSE;
-    }
-
-    if (gRumbleDataQueue[2].unk00 != 0) {
-        return FALSE;
+    for (int i = 0; i < 3; ++i) {
+        if (gRumbleDataQueue[i].unk00 != 0) {
+            return FALSE;
+        }
     }
 
     return TRUE;
@@ -190,34 +184,29 @@ void reset_rumble_timers_2(s32 a0) {
         return;
     }
 
-    if (gCurrRumbleSettings.unk0A == 0) {
-        gCurrRumbleSettings.unk0A = 7;
-    }
+    gCurrRumbleSettings.unk0A = (gCurrRumbleSettings.unk0A < 4) ? 4 : gCurrRumbleSettings.unk0A;
 
-    if (gCurrRumbleSettings.unk0A < 4) {
-        gCurrRumbleSettings.unk0A = 4;
-    }
-
-    if (a0 == 4) {
-        gCurrRumbleSettings.unk0C = 1;
-    }
-
-    if (a0 == 3) {
-        gCurrRumbleSettings.unk0C = 2;
-    }
-
-    if (a0 == 2) {
-        gCurrRumbleSettings.unk0C = 3;
-    }
-
-    if (a0 == 1) {
-        gCurrRumbleSettings.unk0C = 4;
-    }
-
-    if (a0 == 0) {
-        gCurrRumbleSettings.unk0C = 5;
+    switch (a0) {
+        case 4:
+            gCurrRumbleSettings.unk0C = 1;
+            break;
+        case 3:
+            gCurrRumbleSettings.unk0C = 2;
+            break;
+        case 2:
+            gCurrRumbleSettings.unk0C = 3;
+            break;
+        case 1:
+            gCurrRumbleSettings.unk0C = 4;
+            break;
+        case 0:
+            gCurrRumbleSettings.unk0C = 5;
+            break;
+        default:
+            break;
     }
 }
+
 
 void func_sh_8024CA04(void) {
     if (sUnusedDisableRumble) {
